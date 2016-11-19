@@ -234,3 +234,5 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+OrangeBricks.Web/Migrations/Configuration.cs
+OrangeBricks.Web/Web.config
