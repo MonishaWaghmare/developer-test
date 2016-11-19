@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using OrangeBricks.Web.Models;
 
-namespace OrangeBricks.Web.Controllers.Property.Commands
+namespace OrangeBricks.Web.Controllers.Offers.Commands
 {
     public class MakeOfferCommandHandler
     {
@@ -13,7 +13,7 @@ namespace OrangeBricks.Web.Controllers.Property.Commands
             _context = context;
         }
 
-        public void Handle(MakeOfferCommand command)
+        public void Handle(MakeOfferCommand command, string buyerUserId)
         {
             var property = _context.Properties.Find(command.PropertyId);
 
@@ -22,7 +22,8 @@ namespace OrangeBricks.Web.Controllers.Property.Commands
                 Amount = command.Offer,
                 Status = OfferStatus.Pending,
                 CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
+                UpdatedAt = DateTime.Now,
+                BuyerUserId = buyerUserId
             };
 
             if (property.Offers == null)

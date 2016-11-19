@@ -8,5 +8,9 @@ namespace OrangeBricks.Web.Controllers.Property.ViewModels
         public string PropertyType { get; set; }
         public int Id { get; set; }
         public bool IsListedForSale { get; set; }
+        public string SellerUserId { get; set; }
+        public bool HasBuyerMadeOffer { get; set; }
     }
+
+   
 }

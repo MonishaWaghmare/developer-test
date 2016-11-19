@@ -1,4 +1,4 @@
-namespace OrangeBricks.Web.Controllers.Property.Commands
+namespace OrangeBricks.Web.Controllers.Offers.Commands
 {
     public class MakeOfferCommand
     {

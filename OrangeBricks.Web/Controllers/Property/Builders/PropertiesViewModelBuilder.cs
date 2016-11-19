@@ -3,6 +3,7 @@ using System.Data.Entity.Core.Common.CommandTrees;
 using System.Linq;
 using OrangeBricks.Web.Controllers.Property.ViewModels;
 using OrangeBricks.Web.Models;
+using System.Collections.Generic;
 
 namespace OrangeBricks.Web.Controllers.Property.Builders
 {
@@ -15,16 +16,18 @@ namespace OrangeBricks.Web.Controllers.Property.Builders
             _context = context;
         }
 
-        public PropertiesViewModel Build(PropertiesQuery query)
+        public PropertiesViewModel Build(PropertiesQuery query, string currentUserId)
         {
             var properties = _context.Properties
-                .Where(p => p.IsListedForSale);
+                .Where(p => p.IsListedForSale && p.SellerUserId != currentUserId);
 
             if (!string.IsNullOrWhiteSpace(query.Search))
             {
-                properties = properties.Where(x => x.StreetName.Contains(query.Search) 
-                    || x.Description.Contains(query.Search));
+                properties = properties.Where(x => (x.StreetName.Contains(query.Search)
+                    || x.Description.Contains(query.Search)) && x.SellerUserId != currentUserId);
             }
+
+            
 
             return new PropertiesViewModel
             {
@@ -36,7 +39,8 @@ namespace OrangeBricks.Web.Controllers.Property.Builders
             };
         }
 
-        private static PropertyViewModel MapViewModel(Models.Property property)
+       
+        public static PropertyViewModel MapViewModel(Models.Property property)
         {
             return new PropertyViewModel
             {
@@ -44,7 +48,9 @@ namespace OrangeBricks.Web.Controllers.Property.Builders
                 StreetName = property.StreetName,
                 Description = property.Description,
                 NumberOfBedrooms = property.NumberOfBedrooms,
-                PropertyType = property.PropertyType
+                PropertyType = property.PropertyType,
+                SellerUserId = property.SellerUserId,
+                
             };
         }
     }

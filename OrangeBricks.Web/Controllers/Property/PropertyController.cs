@@ -7,6 +7,11 @@ using OrangeBricks.Web.Controllers.Property.Builders;
 using OrangeBricks.Web.Controllers.Property.Commands;
 using OrangeBricks.Web.Controllers.Property.ViewModels;
 using OrangeBricks.Web.Models;
+using OrangeBricks.Web.Controllers.Offers.Builders;
+using OrangeBricks.Web.Controllers.Offers.Commands;
+using OrangeBricks.Web.Controllers.Bookings.ViewModels;
+using OrangeBricks.Web.Controllers.Bookings.Commands;
+using OrangeBricks.Web.Controllers.Bookings.Builders;
 
 namespace OrangeBricks.Web.Controllers.Property
 {
@@ -23,7 +28,7 @@ namespace OrangeBricks.Web.Controllers.Property
         public ActionResult Index(PropertiesQuery query)
         {
             var builder = new PropertiesViewModelBuilder(_context);
-            var viewModel = builder.Build(query);
+            var viewModel = builder.Build(query, User.Identity.GetUserId());
 
             return View(viewModel);
         }
@@ -87,7 +92,27 @@ namespace OrangeBricks.Web.Controllers.Property
         {
             var handler = new MakeOfferCommandHandler(_context);
 
-            handler.Handle(command);
+            handler.Handle(command, User.Identity.GetUserId());
+
+            return RedirectToAction("Index");
+        }
+
+
+        [OrangeBricksAuthorize(Roles = "Buyer")]
+        public ActionResult BookViewing(int id)
+        {
+            var builder = new BookViewingViewModelBuilder(_context);
+            var viewModel = builder.Build(id);
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [OrangeBricksAuthorize(Roles = "Buyer")]
+        public ActionResult BookViewing(BookingViewModel booking)
+        {
+            var handler = new BookingCommandHandler(_context);
+
+            handler.Save(booking, User.Identity.GetUserId());
 
             return RedirectToAction("Index");
         }

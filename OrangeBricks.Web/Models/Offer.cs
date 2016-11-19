@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OrangeBricks.Web.Models
 {
@@ -15,5 +16,12 @@ namespace OrangeBricks.Web.Models
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }
+
+        public int Property_Id { get; set; }
+
+        [ForeignKey("Property_Id")]
+        public virtual Property ProperyRef { get; set; }
+
+        public string BuyerUserId { get; set; }
     }
 }

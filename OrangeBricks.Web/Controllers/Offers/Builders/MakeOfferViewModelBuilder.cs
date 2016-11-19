@@ -1,7 +1,7 @@
 using OrangeBricks.Web.Controllers.Property.ViewModels;
 using OrangeBricks.Web.Models;
 
-namespace OrangeBricks.Web.Controllers.Property.Builders
+namespace OrangeBricks.Web.Controllers.Offers.Builders
 {
     public class MakeOfferViewModelBuilder
     {

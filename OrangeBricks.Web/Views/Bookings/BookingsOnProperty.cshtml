@@ -1,0 +1,55 @@
+﻿@model OrangeBricks.Web.Controllers.Bookings.ViewModels.BookingsOnPropertyViewModel
+
+@{
+    ViewBag.Title = "Bookings on Your Property";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>Bokkings that have been made on your property.</p>
+
+<p><strong>Property type:</strong> @Model.Property.PropertyType</p>
+<p><strong>Number of bedrooms:</strong> @Model.Property.NumberOfBedrooms</p>
+<p><strong>Street name:</strong> @Model.Property.StreetName</p>
+
+@if (Model.HasBookings)
+{
+    <p>There are @Model.Bookings.Count() bookings on this property...</p>
+    
+    foreach (var aBooking in Model.Bookings)
+    {
+        <hr/>
+        <div>
+            <p><strong>Viewing At: </strong> @aBooking.ViewingAt.ToLongTimeString() on @aBooking.ViewingAt.ToShortDateString()</p>
+            <p><strong>Status: </strong> @aBooking.Status</p>
+        </div>
+
+        if (aBooking.IsRequested)
+        {
+            using (Html.BeginForm("Confirmed", "Bookings"))
+            {
+              @Html.Hidden("PropertyId", Model.Property.Id)
+                @Html.Hidden("BookingId", aBooking.Id)
+                <p>
+                    <input type="submit" class="btn btn-default" value="Confirm Viewing" />
+                </p>
+            }
+            using (Html.BeginForm("Cancel", "Bookings"))
+            {
+                @Html.Hidden("PropertyId", Model.Property.Id)
+                @Html.Hidden("BookingId", aBooking.Id)
+                <p>
+                    <input type="submit" class="btn btn-default" value="Cancel Viewing" />
+                </p>
+            }
+        }
+
+    }
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        This property has no bookings yet!
+    </div>
+}
